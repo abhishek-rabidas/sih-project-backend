@@ -6,8 +6,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 public interface CollegeService {
 
     public  List<CollegeEntity> getRegisteredColleges();
+
+    public CollegeEntity registerCollege(Map<String,String> collegeDetails);
 }
