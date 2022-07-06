@@ -13,6 +13,7 @@ import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/college")
@@ -48,5 +49,24 @@ public class CollegeController {
 
         //TODO Pagination
         //return collegeService.getRegisteredColleges();
+    }
+
+
+    @PostMapping("/registerCollege")
+    public ResponseEntity<APIResponse<CollegeEntity>> registerCollege(@RequestBody CollegeRegistrationRequest collegeDetails)
+    {
+        APIResponse<CollegeEntity> response = new APIResponse<>();
+        try {
+            response.setData(collegeService.registerCollege(collegeDetails));
+            return ResponseEntity.status(response.getStatusCode()).body(response);
+        } catch (HttpClientErrorException | HttpServerErrorException e) {
+            response.setStatusCode(e.getStatusCode().value());
+            response.setMessage(e.getStatusText());
+            return ResponseEntity.internalServerError().body(response);
+        } catch (Exception e) {
+            response.setStatusCode(500);
+            response.setMessage(e.getMessage());
+            return ResponseEntity.internalServerError().body(response);
+        }
     }
 }

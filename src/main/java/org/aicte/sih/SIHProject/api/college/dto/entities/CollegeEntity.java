@@ -18,5 +18,4 @@ public class CollegeEntity {
     private String name;
     private String uin;
     public CollegeEntity(){};
-
 }
