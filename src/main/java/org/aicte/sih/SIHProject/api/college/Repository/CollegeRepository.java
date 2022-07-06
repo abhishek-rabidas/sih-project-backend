@@ -11,4 +11,3 @@ import java.util.Optional;
 public interface CollegeRepository extends JpaRepository<CollegeEntity, Long> {
 
     long countByUin(String uin);
-}
