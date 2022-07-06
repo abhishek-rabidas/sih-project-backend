@@ -25,7 +25,7 @@ public class CollegeServiceImplementation implements CollegeService{
 
     @Override
     public CollegeEntity registerCollege(Map<String,String> collegeDetails) {
-        Optional<CollegeEntity> collegeEntityOptional = collegeRepository.findCollegeByUIN(collegeDetails.get("uin"));
+        Optional<CollegeEntity> collegeEntityOptional = collegeRepository.findAllByUin(collegeDetails.get("uin"));
 
         if(collegeEntityOptional.isPresent())
         {

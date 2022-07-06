@@ -10,5 +10,5 @@ import java.util.Optional;
 @Repository
 public interface CollegeRepository extends JpaRepository<CollegeEntity, Long> {
 
-    Optional<CollegeEntity> findCollegeByUIN(String uin);
+    Optional<CollegeEntity> findAllByUin(String uin);
 }
