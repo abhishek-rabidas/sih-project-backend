@@ -17,7 +17,7 @@ public class CollegeServiceImplementation implements CollegeService {
 
 
     @Autowired
-    public static CollegeRepository collegeRepository;
+    public CollegeRepository collegeRepository;
 
     @Override
     public List<CollegeEntity> getRegisteredColleges() {
