@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class CollegeServiceImplementation implements CollegeService{
+public class CollegeServiceImplementation implements CollegeService {
 
 
     @Autowired
@@ -26,20 +26,14 @@ public class CollegeServiceImplementation implements CollegeService{
 
     @Override
     public CollegeEntity registerCollege(CollegeRegistrationRequest collegeDetails) {
-        Optional<CollegeEntity> collegeEntityOptional = collegeRepository.findAllByUin(collegeDetails.getUin());
 
-        if(collegeEntityOptional.isPresent())
-        {
-            throw  new CollegeExceptions("already registered");
-        }
 
-        else if(collegeDetails.getUin()==null || collegeDetails.getName()==null)
-        {
-            throw  new CollegeExceptions("bad body found");
+        if (collegeRepository.countByUin(collegeDetails.getUin()) > 0) {
+            throw new CollegeExceptions("already registered");
+        } else if (collegeDetails.getUin() == null || collegeDetails.getName() == null) {
+            throw new CollegeExceptions("bad body found");
 
-        }
-        else
-        {
+        } else {
 
             CollegeEntity college = new CollegeEntity();
             college.setName(collegeDetails.getName());
@@ -47,7 +41,5 @@ public class CollegeServiceImplementation implements CollegeService{
             return collegeRepository.save(college);
 
         }
-
-
     }
 }

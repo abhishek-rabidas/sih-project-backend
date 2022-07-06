@@ -56,7 +56,6 @@ public class CollegeController {
     public ResponseEntity<APIResponse<CollegeEntity>> registerCollege(@RequestBody CollegeRegistrationRequest collegeDetails)
     {
         APIResponse<CollegeEntity> response = new APIResponse<>();
-
         try {
             response.setData(collegeService.registerCollege(collegeDetails));
             return ResponseEntity.status(response.getStatusCode()).body(response);
