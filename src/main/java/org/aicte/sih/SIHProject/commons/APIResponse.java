@@ -1,8 +1,10 @@
 package org.aicte.sih.SIHProject.commons;
 
+import lombok.Getter;
 import lombok.Setter;
 
 @Setter
+@Getter
 public class APIResponse<T> {
     private int statusCode;
     private String message;
