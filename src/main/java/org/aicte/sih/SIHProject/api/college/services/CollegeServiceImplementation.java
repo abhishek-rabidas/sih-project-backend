@@ -14,7 +14,7 @@ public class CollegeServiceImplementation implements CollegeService{
     public static CollegeRepository collegeRepository;
 
     @Override
-    public  List<CollegeEntity> getRegisteredColleges() {
+    public List<CollegeEntity> getRegisteredColleges() {
         return collegeRepository.findAll();
     }
 }
