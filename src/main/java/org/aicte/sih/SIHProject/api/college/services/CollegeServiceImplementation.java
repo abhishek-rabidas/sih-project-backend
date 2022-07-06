@@ -3,6 +3,7 @@ package org.aicte.sih.SIHProject.api.college.services;
 import org.aicte.sih.SIHProject.api.college.Exception.CollegeExceptions;
 import org.aicte.sih.SIHProject.api.college.Repository.CollegeRepository;
 import org.aicte.sih.SIHProject.api.college.dto.entities.CollegeEntity;
+import org.aicte.sih.SIHProject.api.college.dto.request.CollegeRegistrationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,15 +25,15 @@ public class CollegeServiceImplementation implements CollegeService{
     }
 
     @Override
-    public CollegeEntity registerCollege(Map<String,String> collegeDetails) {
-        Optional<CollegeEntity> collegeEntityOptional = collegeRepository.findAllByUin(collegeDetails.get("uin"));
+    public CollegeEntity registerCollege(CollegeRegistrationRequest collegeDetails) {
+        Optional<CollegeEntity> collegeEntityOptional = collegeRepository.findAllByUin(collegeDetails.getUin());
 
         if(collegeEntityOptional.isPresent())
         {
             throw  new CollegeExceptions("already registered");
         }
 
-        else if(collegeDetails.get("uin")==null || collegeDetails.get("name")==null)
+        else if(collegeDetails.getUin()==null || collegeDetails.getName()==null)
         {
             throw  new CollegeExceptions("bad body found");
 
@@ -41,8 +42,8 @@ public class CollegeServiceImplementation implements CollegeService{
         {
 
             CollegeEntity college = new CollegeEntity();
-            college.setName(collegeDetails.get("name"));
-            college.setUin(collegeDetails.get("uin"));
+            college.setName(collegeDetails.getName());
+            college.setUin(collegeDetails.getUin());
             return collegeRepository.save(college);
 
         }

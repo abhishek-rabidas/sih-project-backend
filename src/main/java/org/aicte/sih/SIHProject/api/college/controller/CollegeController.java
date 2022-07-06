@@ -53,7 +53,7 @@ public class CollegeController {
 
 
     @PostMapping("/registerCollege")
-    public ResponseEntity<APIResponse<CollegeEntity>> registerCollege(@RequestBody Map<String,String> collegeDetails)
+    public ResponseEntity<APIResponse<CollegeEntity>> registerCollege(@RequestBody CollegeRegistrationRequest collegeDetails)
     {
         APIResponse<CollegeEntity> response = new APIResponse<>();
 
