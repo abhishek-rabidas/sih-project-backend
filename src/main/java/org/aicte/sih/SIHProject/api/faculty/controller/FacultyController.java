@@ -18,7 +18,7 @@ public class FacultyController {
     private FacultyServices facultyServices;
 
     @PostMapping
-    public ResponseEntity<APIResponse> register(@RequestBody FacultyRegistrationRequest facultyRegistrationRequest) {
+    public ResponseEntity<APIResponse<FacultyDataResponse>> register(@RequestBody FacultyRegistrationRequest facultyRegistrationRequest) {
         APIResponse<FacultyDataResponse> response = new APIResponse<>();
         try {
             response.setData(facultyServices.registerFaculty(facultyRegistrationRequest));
@@ -35,7 +35,7 @@ public class FacultyController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<APIResponse> getFaculty(@PathVariable("id") Long id) {
+    public ResponseEntity<APIResponse<FacultyDataResponse>> getFaculty(@PathVariable("id") Long id) {
         APIResponse<FacultyDataResponse> response = new APIResponse<>();
         try {
             response.setData(facultyServices.getFaculty(id));

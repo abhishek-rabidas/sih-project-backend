@@ -1,5 +1,6 @@
 package org.aicte.sih.SIHProject.api.faculty.dto.response;
 
+import lombok.Getter;
 import lombok.Setter;
 import org.aicte.sih.SIHProject.api.faculty.dto.entities.Faculty;
 import org.aicte.sih.SIHProject.api.faculty.dto.entities.FacultyCertification;
@@ -8,6 +9,7 @@ import org.aicte.sih.SIHProject.api.faculty.dto.entities.FacultyExperience;
 import java.math.BigInteger;
 import java.util.List;
 
+@Getter
 @Setter
 public class FacultyDataResponse {
     private String firstName;
