@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class JobPostRequest {
+    private String uin;
     private String heading;
     private String description;
     private String subjects;

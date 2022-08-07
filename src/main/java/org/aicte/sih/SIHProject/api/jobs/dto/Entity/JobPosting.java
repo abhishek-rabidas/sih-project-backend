@@ -7,6 +7,7 @@ import org.aicte.sih.SIHProject.api.jobs.dto.EmploymentType;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 import java.time.LocalDateTime;
 
 @Entity
@@ -19,6 +20,7 @@ public class JobPosting extends AbstractPersistable<Long> {
     private String collegeName;
     private String city;
     private String state;
+    @OneToOne
     private CollegeEntity college;
     private LocalDateTime postedOn;
     private LocalDateTime lastEditedOn;
