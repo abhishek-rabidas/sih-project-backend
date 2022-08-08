@@ -7,6 +7,8 @@ import org.aicte.sih.SIHProject.api.jobs.dto.EmploymentType;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.OneToOne;
 import java.time.LocalDateTime;
 
@@ -28,6 +30,7 @@ public class JobPosting extends AbstractPersistable<Long> {
     private int maxYearsExperienceRequired;
     private int totalApplicants;
     private int totalViews;
-    private EmploymentType roleType;
+    @Enumerated(EnumType.STRING)
+    private EmploymentType employmentType;
     private boolean isOpen;
 }

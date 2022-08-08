@@ -44,16 +44,16 @@ public class JobPostingServicesImplementation implements JobPostingServices {
             jobPosting.setTotalApplicants(0);
             switch (jobPostRequest.getRoleType()) {
                 case "FULLTIME":
-                    jobPosting.setRoleType(EmploymentType.FULLTIME);
+                    jobPosting.setEmploymentType(EmploymentType.FULLTIME);
                     break;
                 case "PARTIME":
-                    jobPosting.setRoleType(EmploymentType.PARTIME);
+                    jobPosting.setEmploymentType(EmploymentType.PARTIME);
                     break;
                 case "CONTRACT":
-                    jobPosting.setRoleType(EmploymentType.CONTRACT);
+                    jobPosting.setEmploymentType(EmploymentType.CONTRACT);
                     break;
                 case "PERMANENT":
-                    jobPosting.setRoleType(EmploymentType.PERMANENT);
+                    jobPosting.setEmploymentType(EmploymentType.PERMANENT);
                     break;
                 default:
                     throw new IncorrectJobPostingValues("Unidentified Role Type");
