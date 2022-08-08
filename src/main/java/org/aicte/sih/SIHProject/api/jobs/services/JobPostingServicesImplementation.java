@@ -59,13 +59,12 @@ public class JobPostingServicesImplementation implements JobPostingServices {
                     throw new IncorrectJobPostingValues("Unidentified Role Type");
             }
             jobPosting.setOpen(true);
-
             return jobPostingRepository.save(jobPosting);
         }
     }
 
     @Override
     public Page<JobPosting> listAllJobPostings(PageRequest pageRequest) {
-        return null;
+        return jobPostingRepository.findAll(pageRequest);
     }
 }

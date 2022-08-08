@@ -39,9 +39,9 @@ public class JobPostingController {
 
     @GetMapping
     public ResponseEntity<APIResponse> getAllJobPostings(@RequestParam("pageNumber") int pageNumber,
-                                                         @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
+                                                         @RequestParam(value = "pageSize", defaultValue = "10") int pageSize, @RequestParam("sortBy") String sortBy) {
         APIResponse<Page<JobPosting>> response = new APIResponse<>();
-        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, Sort.Direction.ASC);
+        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy).descending());
         try {
             response.setData(postingServices.listAllJobPostings(pageRequest));
             return ResponseEntity.ok(response);
