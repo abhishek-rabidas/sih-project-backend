@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface FacultyRepository extends JpaRepository<Faculty, Long> {
-    Faculty getOneById(Long id);
+    Faculty findOneById(Long id);
 }

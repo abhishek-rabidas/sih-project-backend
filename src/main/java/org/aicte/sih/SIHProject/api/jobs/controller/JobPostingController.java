@@ -1,6 +1,7 @@
 package org.aicte.sih.SIHProject.api.jobs.controller;
 
 import org.aicte.sih.SIHProject.api.jobs.dto.Entity.JobPosting;
+import org.aicte.sih.SIHProject.api.jobs.dto.request.ApplyForJobRequest;
 import org.aicte.sih.SIHProject.api.jobs.dto.request.JobPostRequest;
 import org.aicte.sih.SIHProject.api.jobs.services.JobPostingServices;
 import org.aicte.sih.SIHProject.commons.APIResponse;
@@ -39,11 +40,29 @@ public class JobPostingController {
 
     @GetMapping
     public ResponseEntity<APIResponse> getAllJobPostings(@RequestParam("pageNumber") int pageNumber,
-                                                         @RequestParam(value = "pageSize", defaultValue = "10") int pageSize, @RequestParam("sortBy") String sortBy) {
+                                                         @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+                                                         @RequestParam("sortBy") String sortBy) {
         APIResponse<Page<JobPosting>> response = new APIResponse<>();
         PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy).descending());
         try {
             response.setData(postingServices.listAllJobPostings(pageRequest));
+            return ResponseEntity.ok(response);
+        } catch (HttpClientErrorException | HttpServerErrorException e) {
+            response.setStatusCode(e.getStatusCode().value());
+            response.setMessage(e.getStatusText());
+            return ResponseEntity.internalServerError().body(response);
+        } catch (Exception e) {
+            response.setStatusCode(500);
+            response.setMessage(e.getMessage());
+            return ResponseEntity.internalServerError().body(response);
+        }
+    }
+
+    @PostMapping("/apply")
+    public ResponseEntity<APIResponse> apply(@RequestBody ApplyForJobRequest request) {
+        APIResponse response = new APIResponse<>();
+        try {
+            postingServices.applyForJobPost(request);
             return ResponseEntity.ok(response);
         } catch (HttpClientErrorException | HttpServerErrorException e) {
             response.setStatusCode(e.getStatusCode().value());

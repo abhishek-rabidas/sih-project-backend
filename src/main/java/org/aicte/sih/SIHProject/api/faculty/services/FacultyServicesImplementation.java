@@ -33,6 +33,6 @@ public class FacultyServicesImplementation implements FacultyServices{
 
     @Override
     public FacultyDataResponse getFaculty(Long id) {
-        return new FacultyDataResponse(facultyRepository.getOneById(id));
+        return new FacultyDataResponse(facultyRepository.findOneById(id));
     }
 }

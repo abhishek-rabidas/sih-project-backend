@@ -6,5 +6,5 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public interface JobPostingRepository extends JpaRepository<JobPosting, Long> {
-
+    JobPosting findOneById(Long id);
 }
