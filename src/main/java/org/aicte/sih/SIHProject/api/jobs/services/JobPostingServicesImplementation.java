@@ -87,4 +87,44 @@ public class JobPostingServicesImplementation implements JobPostingServices {
         appliedJob.setCoverLetter(request.getCoverLetter());
         appliedJobRepository.save(appliedJob);
     }
+
+    @Override
+    public JobPost editJobPost(JobPostRequest jobPostRequest, Long id) throws IncorrectJobPostingValues {
+        CollegeEntity college = collegeRepository.findOneByUin(jobPostRequest.getUin());
+        if (college == null) {
+            throw new CollegeExceptions("College Not Found");
+        } else {
+            JobPost jobPost = jobPostingRepository.findOneById(id);
+            jobPost.setHeading(jobPostRequest.getHeading());
+            jobPost.setDescription(jobPostRequest.getDescription());
+            jobPost.setSubjects(jobPostRequest.getSubjects());
+            jobPost.setLastEditedOn(LocalDateTime.now());
+            jobPost.setMinYearsExperienceRequired(jobPostRequest.getMinYearsExperienceRequired());
+            jobPost.setMaxYearsExperienceRequired(jobPostRequest.getMaxYearsExperienceRequired());
+            switch (jobPostRequest.getRoleType()) {
+                case "FULLTIME":
+                    jobPost.setEmploymentType(EmploymentType.FULLTIME);
+                    break;
+                case "PARTIME":
+                    jobPost.setEmploymentType(EmploymentType.PARTIME);
+                    break;
+                case "CONTRACT":
+                    jobPost.setEmploymentType(EmploymentType.CONTRACT);
+                    break;
+                case "PERMANENT":
+                    jobPost.setEmploymentType(EmploymentType.PERMANENT);
+                    break;
+                default:
+                    throw new IncorrectJobPostingValues("Unidentified Role Type");
+            }
+            return jobPostingRepository.save(jobPost);
+        }
+    }
+
+    @Override
+    public void markJobPostClosed(Long id) {
+        JobPost jobPost = jobPostingRepository.findOneById(id);
+        jobPost.setOpen(false);
+        jobPostingRepository.save(jobPost);
+    }
 }

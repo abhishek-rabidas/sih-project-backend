@@ -39,10 +39,10 @@ public class JobPostingController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<APIResponse<JobPost>> editJobPost(@RequestBody JobPost jobPost, @PathVariable("id") Long id) {
+    public ResponseEntity<APIResponse<JobPost>> editJobPost(@RequestBody JobPostRequest jobPost, @PathVariable("id") Long id) {
         APIResponse<JobPost> response = new APIResponse<>();
         try {
-
+            response.setData(postingServices.editJobPost(jobPost, id));
             return ResponseEntity.ok(response);
         } catch (HttpClientErrorException | HttpServerErrorException e) {
             response.setStatusCode(e.getStatusCode().value());
@@ -54,6 +54,24 @@ public class JobPostingController {
             return ResponseEntity.internalServerError().body(response);
         }
     }
+
+    @PostMapping("/closePost/{id}")
+    public ResponseEntity<APIResponse> markJobPostClosed(@PathVariable("id") Long id) {
+        APIResponse response = new APIResponse<>();
+        try {
+            postingServices.markJobPostClosed(id);
+            return ResponseEntity.ok(response);
+        } catch (HttpClientErrorException | HttpServerErrorException e) {
+            response.setStatusCode(e.getStatusCode().value());
+            response.setMessage(e.getStatusText());
+            return ResponseEntity.internalServerError().body(response);
+        } catch (Exception e) {
+            response.setStatusCode(500);
+            response.setMessage(e.getMessage());
+            return ResponseEntity.internalServerError().body(response);
+        }
+    }
+
 
     @GetMapping
     public ResponseEntity<APIResponse> getAllJobPostings(@RequestParam("pageNumber") int pageNumber,
