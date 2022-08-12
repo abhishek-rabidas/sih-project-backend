@@ -1,6 +1,6 @@
 package org.aicte.sih.SIHProject.api.jobs.controller;
 
-import org.aicte.sih.SIHProject.api.jobs.dto.Entity.JobPosting;
+import org.aicte.sih.SIHProject.api.jobs.dto.Entity.JobPost;
 import org.aicte.sih.SIHProject.api.jobs.dto.request.ApplyForJobRequest;
 import org.aicte.sih.SIHProject.api.jobs.dto.request.JobPostRequest;
 import org.aicte.sih.SIHProject.api.jobs.services.JobPostingServices;
@@ -22,10 +22,27 @@ public class JobPostingController {
     private JobPostingServices postingServices;
 
     @PostMapping
-    public ResponseEntity<APIResponse<JobPosting>> postNewJob(@RequestBody JobPostRequest jobPostRequest) {
-        APIResponse<JobPosting> response = new APIResponse<>();
+    public ResponseEntity<APIResponse<JobPost>> postNewJob(@RequestBody JobPostRequest jobPostRequest) {
+        APIResponse<JobPost> response = new APIResponse<>();
         try {
             response.setData(postingServices.addNewJobPost(jobPostRequest));
+            return ResponseEntity.ok(response);
+        } catch (HttpClientErrorException | HttpServerErrorException e) {
+            response.setStatusCode(e.getStatusCode().value());
+            response.setMessage(e.getStatusText());
+            return ResponseEntity.internalServerError().body(response);
+        } catch (Exception e) {
+            response.setStatusCode(500);
+            response.setMessage(e.getMessage());
+            return ResponseEntity.internalServerError().body(response);
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<APIResponse<JobPost>> editJobPost(@RequestBody JobPost jobPost, @PathVariable("id") Long id) {
+        APIResponse<JobPost> response = new APIResponse<>();
+        try {
+
             return ResponseEntity.ok(response);
         } catch (HttpClientErrorException | HttpServerErrorException e) {
             response.setStatusCode(e.getStatusCode().value());
@@ -42,7 +59,7 @@ public class JobPostingController {
     public ResponseEntity<APIResponse> getAllJobPostings(@RequestParam("pageNumber") int pageNumber,
                                                          @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
                                                          @RequestParam("sortBy") String sortBy) {
-        APIResponse<Page<JobPosting>> response = new APIResponse<>();
+        APIResponse<Page<JobPost>> response = new APIResponse<>();
         PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy).descending());
         try {
             response.setData(postingServices.listAllJobPostings(pageRequest));

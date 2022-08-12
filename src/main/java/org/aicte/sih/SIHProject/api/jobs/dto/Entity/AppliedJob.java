@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Setter
 public class AppliedJob extends AbstractPersistable<Long> {
     @OneToOne
-    private JobPosting appliedPost;
+    private JobPost appliedPost;
 
     @OneToOne
     private Faculty faculty;

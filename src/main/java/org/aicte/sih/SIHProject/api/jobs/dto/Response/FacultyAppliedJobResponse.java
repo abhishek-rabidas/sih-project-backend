@@ -3,14 +3,14 @@ package org.aicte.sih.SIHProject.api.jobs.dto.Response;
 import lombok.Getter;
 import lombok.Setter;
 import org.aicte.sih.SIHProject.api.jobs.dto.Entity.AppliedJob;
-import org.aicte.sih.SIHProject.api.jobs.dto.Entity.JobPosting;
+import org.aicte.sih.SIHProject.api.jobs.dto.Entity.JobPost;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 public class FacultyAppliedJobResponse {
-    private JobPosting appliedPost;
+    private JobPost appliedPost;
     private LocalDateTime appliedOn;
     private String coverLetter;
 

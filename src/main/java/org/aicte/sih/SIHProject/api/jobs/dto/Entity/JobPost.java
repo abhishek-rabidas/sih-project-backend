@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-public class JobPosting extends AbstractPersistable<Long> {
+public class JobPost extends AbstractPersistable<Long> {
     private String heading;
     private String description;
     private String subjects;
