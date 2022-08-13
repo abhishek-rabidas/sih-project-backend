@@ -11,4 +11,6 @@ public interface JobPostingServices {
     public JobPost addNewJobPost(JobPostRequest jobPostRequest) throws IncorrectJobPostingValues;
     public Page<JobPost> listAllJobPostings(PageRequest pageRequest);
     public void applyForJobPost(ApplyForJobRequest request);
+    public JobPost editJobPost(JobPostRequest jobPostRequest, Long id) throws IncorrectJobPostingValues;
+    public void markJobPostClosed(Long id);
 }

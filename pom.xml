@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>org.aicte.sih</groupId>
 	<artifactId>SIH-Project</artifactId>
-	<version>0.2</version>
+	<version>0.3</version>
 	<name>SIH-Project</name>
 	<description>Backend Repo for the Smart India Hackathon Project</description>
 	<properties>
