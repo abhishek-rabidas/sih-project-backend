@@ -24,7 +24,6 @@ public class CollegeController {
     @GetMapping()
     public ResponseEntity<APIResponse<List<CollegeEntity>>> getCollegeList() {
         APIResponse<List<CollegeEntity>> response = new APIResponse<>();
-
         try {
             response.setData(collegeService.getRegisteredColleges());
             return ResponseEntity.status(response.getStatusCode()).body(response);
@@ -77,21 +76,4 @@ public class CollegeController {
             return ResponseEntity.internalServerError().body(response);
         }
     }
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<APIResponse> deleteCollegeDetails(@PathVariable("id") Long id) {
-//        APIResponse<?> response = new APIResponse<>();
-//        try {
-//            collegeService.deleteCollege(id);
-//            return ResponseEntity.ok(response);
-//        } catch (HttpClientErrorException | HttpServerErrorException e) {
-//            response.setStatusCode(e.getStatusCode().value());
-//            response.setMessage(e.getStatusText());
-//            return ResponseEntity.internalServerError().body(response);
-//        } catch (Exception e) {
-//            response.setStatusCode(500);
-//            response.setMessage(e.getMessage());
-//            return ResponseEntity.internalServerError().body(response);
-//        }
-//    }
-
 }

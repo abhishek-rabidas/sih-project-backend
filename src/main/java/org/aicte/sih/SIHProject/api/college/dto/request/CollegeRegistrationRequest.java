@@ -3,8 +3,6 @@ package org.aicte.sih.SIHProject.api.college.dto.request;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
-
 @Getter
 @Setter
 public class CollegeRegistrationRequest {
