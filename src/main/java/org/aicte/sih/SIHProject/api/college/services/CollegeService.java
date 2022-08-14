@@ -11,7 +11,8 @@ import java.util.Map;
 
 public interface CollegeService {
 
-    public  List<CollegeEntity> getRegisteredColleges();
-
+    public List<CollegeEntity> getRegisteredColleges();
     public CollegeEntity registerCollege(CollegeRegistrationRequest collegeDetails);
+    public CollegeEntity fetchCollege(Long id);
+
 }
