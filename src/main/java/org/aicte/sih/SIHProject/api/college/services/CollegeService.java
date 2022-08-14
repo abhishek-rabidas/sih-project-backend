@@ -15,4 +15,5 @@ public interface CollegeService {
     public CollegeEntity registerCollege(CollegeRegistrationRequest collegeDetails);
     public CollegeEntity fetchCollege(Long id);
 
+    void markCollegeClosed(Long id);
 }
