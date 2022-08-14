@@ -20,8 +20,7 @@ public class CollegeEntity extends AbstractPersistable<Long> {
     private String email;
     private String phone;
     private String coverImageBaseUrl;
-    @Column(columnDefinition = "boolean default true")
-    private boolean isActive;
+    private boolean isActive = true;
 
 
 }

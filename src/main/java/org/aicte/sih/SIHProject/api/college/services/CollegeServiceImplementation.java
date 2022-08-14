@@ -39,4 +39,11 @@ public class CollegeServiceImplementation implements CollegeService {
     public CollegeEntity fetchCollege(Long id) {
         return collegeRepository.findOneById(id);
     }
+
+    @Override
+    public void markCollegeClosed(Long id) {
+        CollegeEntity collegeEntity = collegeRepository.findOneById(id);
+        collegeEntity.setActive(false);
+        collegeRepository.save(collegeEntity);
+    }
 }

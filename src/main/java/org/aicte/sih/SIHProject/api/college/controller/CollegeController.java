@@ -76,4 +76,23 @@ public class CollegeController {
             return ResponseEntity.internalServerError().body(response);
         }
     }
+
+    @PostMapping("/closeCollege/{id}")
+    public ResponseEntity<APIResponse> markJobPostClosed(@PathVariable("id") Long id) {
+        APIResponse response = new APIResponse<>();
+        try {
+            collegeService.markCollegeClosed(id);
+            return ResponseEntity.ok(response);
+        } catch (HttpClientErrorException | HttpServerErrorException e) {
+            response.setStatusCode(e.getStatusCode().value());
+            response.setMessage(e.getStatusText());
+            return ResponseEntity.internalServerError().body(response);
+        } catch (Exception e) {
+            response.setStatusCode(500);
+            response.setMessage(e.getMessage());
+            return ResponseEntity.internalServerError().body(response);
+        }
+    }
+
+
 }
