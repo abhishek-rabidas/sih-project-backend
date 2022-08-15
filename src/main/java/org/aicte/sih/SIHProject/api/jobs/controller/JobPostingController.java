@@ -1,6 +1,7 @@
 package org.aicte.sih.SIHProject.api.jobs.controller;
 
 import org.aicte.sih.SIHProject.api.jobs.dto.Entity.JobPost;
+import org.aicte.sih.SIHProject.api.jobs.dto.Response.JobApplicationResponse;
 import org.aicte.sih.SIHProject.api.jobs.dto.request.ApplyForJobRequest;
 import org.aicte.sih.SIHProject.api.jobs.dto.request.JobPostRequest;
 import org.aicte.sih.SIHProject.api.jobs.services.JobPostingServices;
@@ -97,6 +98,26 @@ public class JobPostingController {
         APIResponse response = new APIResponse<>();
         try {
             postingServices.applyForJobPost(request);
+            return ResponseEntity.ok(response);
+        } catch (HttpClientErrorException | HttpServerErrorException e) {
+            response.setStatusCode(e.getStatusCode().value());
+            response.setMessage(e.getStatusText());
+            return ResponseEntity.internalServerError().body(response);
+        } catch (Exception e) {
+            response.setStatusCode(500);
+            response.setMessage(e.getMessage());
+            return ResponseEntity.internalServerError().body(response);
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<APIResponse<Page<JobApplicationResponse>>> getApplications(@RequestParam("pageNumber") int pageNumber,
+                                                                         @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+                                                                         @RequestParam("sortBy") String sortBy, @PathVariable("id") Long id) {
+        APIResponse<Page<JobApplicationResponse>> response = new APIResponse<>();
+        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy).descending());
+        try {
+            response.setData(postingServices.getJobApplicants(id, pageRequest));
             return ResponseEntity.ok(response);
         } catch (HttpClientErrorException | HttpServerErrorException e) {
             response.setStatusCode(e.getStatusCode().value());

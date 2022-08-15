@@ -9,6 +9,7 @@ import org.aicte.sih.SIHProject.api.jobs.dao.JobPostingRepository;
 import org.aicte.sih.SIHProject.api.jobs.dto.EmploymentType;
 import org.aicte.sih.SIHProject.api.jobs.dto.Entity.AppliedJob;
 import org.aicte.sih.SIHProject.api.jobs.dto.Entity.JobPost;
+import org.aicte.sih.SIHProject.api.jobs.dto.Response.JobApplicationResponse;
 import org.aicte.sih.SIHProject.api.jobs.dto.request.ApplyForJobRequest;
 import org.aicte.sih.SIHProject.api.jobs.dto.request.JobPostRequest;
 import org.aicte.sih.SIHProject.api.jobs.exceptions.IncorrectJobPostingValues;
@@ -131,5 +132,13 @@ public class JobPostingServicesImplementation implements JobPostingServices {
         JobPost jobPost = jobPostingRepository.findOneById(id);
         jobPost.setOpen(false);
         jobPostingRepository.save(jobPost);
+    }
+
+    @Override
+    public Page<JobApplicationResponse> getJobApplicants(Long id, PageRequest pageRequest) throws IncorrectJobPostingValues {
+        JobPost jobPost = jobPostingRepository.findOneById(id);
+        if (jobPost == null)
+            throw new IncorrectJobPostingValues("Job Post Not Found");
+        else return appliedJobRepository.findAllByAppliedPost(jobPost, pageRequest);
     }
 }
