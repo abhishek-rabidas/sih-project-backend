@@ -3,7 +3,6 @@ package org.aicte.sih.SIHProject.api.college.dto.entities;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.AbstractPersistable;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
@@ -20,7 +19,5 @@ public class CollegeEntity extends AbstractPersistable<Long> {
     private String email;
     private String phone;
     private String coverImageBaseUrl;
-    private boolean isActive = true;
-
-
+    private boolean isActive;
 }

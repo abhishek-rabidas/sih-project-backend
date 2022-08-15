@@ -7,7 +7,6 @@ import lombok.Setter;
 @Setter
 public class CollegeRegistrationRequest {
     private String name;
-    private String uin;
     private String aicteAffiliationNumber;
     private String universityRegistrationNumber;
     private String city;
@@ -16,5 +15,4 @@ public class CollegeRegistrationRequest {
     private String email;
     private String phone;
     private String coverImageBaseUrl;
-    public CollegeRegistrationRequest(){};
 }

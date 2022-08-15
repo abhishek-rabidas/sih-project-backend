@@ -36,7 +36,7 @@ public class JobPostingServicesImplementation implements JobPostingServices {
 
     @Override
     public JobPost addNewJobPost(JobPostRequest jobPostRequest) throws IncorrectJobPostingValues {
-        CollegeEntity college = collegeRepository.findOneByUin(jobPostRequest.getUin());
+        CollegeEntity college = collegeRepository.findOneByUin(jobPostRequest.getCollegeUin());
         if (college == null) {
             throw new CollegeExceptions("College Not Found");
         } else {
@@ -46,6 +46,8 @@ public class JobPostingServicesImplementation implements JobPostingServices {
             jobPost.setSubjects(jobPostRequest.getSubjects());
             jobPost.setCollegeName(college.getName());
             jobPost.setCollege(college);
+            jobPost.setCity(college.getCity());
+            jobPost.setState(college.getState());
             jobPost.setPostedOn(LocalDateTime.now());
             jobPost.setLastEditedOn(LocalDateTime.now());
             jobPost.setMinYearsExperienceRequired(jobPostRequest.getMinYearsExperienceRequired());
@@ -75,7 +77,7 @@ public class JobPostingServicesImplementation implements JobPostingServices {
 
     @Override
     public Page<JobPost> listAllJobPostings(PageRequest pageRequest) {
-        return jobPostingRepository.findAll(pageRequest);
+        return jobPostingRepository.findAllByIsOpenTrue(pageRequest);
     }
 
     @Override
@@ -90,11 +92,14 @@ public class JobPostingServicesImplementation implements JobPostingServices {
 
     @Override
     public JobPost editJobPost(JobPostRequest jobPostRequest, Long id) throws IncorrectJobPostingValues {
-        CollegeEntity college = collegeRepository.findOneByUin(jobPostRequest.getUin());
+        CollegeEntity college = collegeRepository.findOneByUin(jobPostRequest.getCollegeUin());
         if (college == null) {
             throw new CollegeExceptions("College Not Found");
         } else {
             JobPost jobPost = jobPostingRepository.findOneById(id);
+            if (jobPost == null) {
+                throw new IncorrectJobPostingValues("Job Post not found");
+            }
             jobPost.setHeading(jobPostRequest.getHeading());
             jobPost.setDescription(jobPostRequest.getDescription());
             jobPost.setSubjects(jobPostRequest.getSubjects());

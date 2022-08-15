@@ -72,8 +72,7 @@ public class JobPostingController {
         }
     }
 
-
-    @GetMapping
+    @GetMapping("/feed")
     public ResponseEntity<APIResponse> getAllJobPostings(@RequestParam("pageNumber") int pageNumber,
                                                          @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
                                                          @RequestParam("sortBy") String sortBy) {
