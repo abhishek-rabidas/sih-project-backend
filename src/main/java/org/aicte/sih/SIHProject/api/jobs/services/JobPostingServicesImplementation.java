@@ -75,7 +75,7 @@ public class JobPostingServicesImplementation implements JobPostingServices {
 
     @Override
     public Page<JobPost> listAllJobPostings(PageRequest pageRequest) {
-        return jobPostingRepository.findAll(pageRequest);
+        return jobPostingRepository.findAllByIsOpenTrue(pageRequest);
     }
 
     @Override

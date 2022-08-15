@@ -10,12 +10,15 @@ import java.util.List;
 
 @Service
 public class CollegeServiceImplementation implements CollegeService {
+
     @Autowired
     public CollegeRepository collegeRepository;
+
     @Override
     public List<CollegeEntity> getRegisteredColleges() {
         return collegeRepository.findAll();
     }
+
     @Override
     public CollegeEntity registerCollege(CollegeRegistrationRequest collegeDetails) {
         if (collegeRepository.countByUin(collegeDetails.getUin()) > 0) {
@@ -26,12 +29,15 @@ public class CollegeServiceImplementation implements CollegeService {
             CollegeEntity college = new CollegeEntity();
             college.setName(collegeDetails.getName());
             college.setUin(collegeDetails.getUin());
-            college.setCity(collegeDetails.getCity());
-            college.setPhone(collegeDetails.getPhone());
-            college.setDateOfEstablishment(collegeDetails.getDateOfEstablishment());
-            college.setCoverImageBaseUrl(collegeDetails.getCoverImageBaseUrl());
             college.setAicteAffiliationNumber(collegeDetails.getAicteAffiliationNumber());
             college.setUniversityRegistrationNumber(collegeDetails.getUniversityRegistrationNumber());
+            college.setCity(collegeDetails.getCity());
+            college.setState(collegeDetails.getState());
+            college.setDateOfEstablishment(collegeDetails.getDateOfEstablishment());
+            college.setPhone(collegeDetails.getPhone());
+            college.setEmail(collegeDetails.getEmail());
+            college.setCoverImageBaseUrl(collegeDetails.getCoverImageBaseUrl());
+            college.setActive(true);
             return collegeRepository.save(college);
         }
     }
