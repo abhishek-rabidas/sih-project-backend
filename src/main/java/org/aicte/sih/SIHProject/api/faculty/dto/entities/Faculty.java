@@ -1,12 +1,12 @@
 package org.aicte.sih.SIHProject.api.faculty.dto.entities;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.aicte.sih.SIHProject.api.certificate.dto.Entity.FacultyCertificate;
+import org.aicte.sih.SIHProject.api.experience.dto.entity.FacultyExperience;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.math.BigInteger;
 import java.util.Date;
@@ -30,5 +30,5 @@ public class Faculty extends AbstractPersistable<Long> {
     @OneToMany
     private List<FacultyExperience> experiences;
     @OneToMany
-    private List<FacultyCertification> certifications;
+    private List<FacultyCertificate> certifications;
 }

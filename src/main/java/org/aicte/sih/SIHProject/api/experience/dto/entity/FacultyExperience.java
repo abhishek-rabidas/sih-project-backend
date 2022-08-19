@@ -18,4 +18,5 @@ public class FacultyExperience extends AbstractPersistable<Long> {
     private String endMonth;
     private int endYear;
     private String skills;
+    private String documentUrl;
 }
