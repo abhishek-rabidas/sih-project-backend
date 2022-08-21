@@ -62,7 +62,7 @@ public class CollegeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<APIResponse<CollegeEntity>> getFaculty(@PathVariable("id") Long id) {
+    public ResponseEntity<APIResponse<CollegeEntity>> getCollege(@PathVariable("id") Long id) {
         APIResponse<CollegeEntity> response = new APIResponse<>();
         try {
             response.setData(collegeService.fetchCollege(id));
@@ -79,7 +79,7 @@ public class CollegeController {
     }
 
     @PostMapping("/closeCollege/{id}")
-    public ResponseEntity<APIResponse> markJobPostClosed(@PathVariable("id") Long id) {
+    public ResponseEntity<APIResponse> markCollegeAsInactive(@PathVariable("id") Long id) {
         APIResponse response = new APIResponse<>();
         try {
             collegeService.markCollegeClosed(id);
