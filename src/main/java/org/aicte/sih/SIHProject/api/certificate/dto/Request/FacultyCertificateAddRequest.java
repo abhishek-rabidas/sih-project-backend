@@ -5,4 +5,10 @@ import lombok.Getter;
 @Getter
 public class FacultyCertificateAddRequest {
 
+    private String certificateNumber;
+    private String issuerName;
+    private String dateOfIssue;
+    private String validTill;
+    private boolean isActive;
+
 }
