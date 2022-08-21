@@ -1,6 +1,7 @@
 package org.aicte.sih.SIHProject.api.certificate.controller;
 
 import org.aicte.sih.SIHProject.api.certificate.dto.Entity.FacultyCertificate;
+import org.aicte.sih.SIHProject.api.certificate.dto.Request.FacultyCertificateAddRequest;
 import org.aicte.sih.SIHProject.api.certificate.services.FacultyCertificateService;
 import org.aicte.sih.SIHProject.api.college.dto.entities.CollegeEntity;
 import org.aicte.sih.SIHProject.api.college.dto.request.CollegeRegistrationRequest;
@@ -42,10 +43,10 @@ public class FacultyCertificateController {
 
 
     @PostMapping
-    public ResponseEntity<APIResponse<FacultyCertificate>> registerCertificate(@RequestBody FacultyCertificate facultyCertificate) {
+    public ResponseEntity<APIResponse<FacultyCertificate>> registerCertificate(@RequestBody FacultyCertificateAddRequest facultyCertificateAddRequest) {
         APIResponse<FacultyCertificate> response = new APIResponse<>();
         try {
-            response.setData(facultyCertificateService.setCertificateDetails(facultyCertificate));
+            response.setData(facultyCertificateService.setCertificateDetails(facultyCertificateAddRequest));
             return ResponseEntity.status(response.getStatusCode()).body(response);
         } catch (HttpClientErrorException | HttpServerErrorException e) {
             response.setStatusCode(e.getStatusCode().value());

@@ -2,7 +2,9 @@ package org.aicte.sih.SIHProject.api.certificate.services;
 
 import org.aicte.sih.SIHProject.api.certificate.dao.FacultyCertificateRepository;
 import org.aicte.sih.SIHProject.api.certificate.dto.Entity.FacultyCertificate;
+import org.aicte.sih.SIHProject.api.certificate.dto.Request.FacultyCertificateAddRequest;
 import org.aicte.sih.SIHProject.api.certificate.exceptions.FacultyCertificateException;
+import org.aicte.sih.SIHProject.api.faculty.dao.FacultyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +13,8 @@ import java.util.List;
 @Service
 public class FacultyCertificateServiceImplementation implements FacultyCertificateService{
 
-
+    @Autowired
+    private FacultyRepository facultyRepository;
     @Autowired
     private FacultyCertificateRepository facultyCertificateRepository;
     @Override
@@ -20,7 +23,7 @@ public class FacultyCertificateServiceImplementation implements FacultyCertifica
     }
 
     @Override
-    public FacultyCertificate setCertificateDetails(FacultyCertificate facultyCertificate) {
+    public FacultyCertificate setCertificateDetails(FacultyCertificateAddRequest facultyCertificate) {
        if(facultyCertificateRepository.countByCertificateNumber(facultyCertificate.getCertificateNumber())>0){
            throw new FacultyCertificateException("Certificate Exists");
        }
@@ -31,6 +34,7 @@ public class FacultyCertificateServiceImplementation implements FacultyCertifica
         certificate.setValidTill(facultyCertificate.getValidTill());
         certificate.setDateOfIssue(facultyCertificate.getDateOfIssue());
         certificate.setActive(true);
+        certificate.setFaculty(facultyRepository.findOneById(facultyCertificate.getFacultyId()));
         return facultyCertificateRepository.save(certificate);
     }
 

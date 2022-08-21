@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class FacultyCertificateAddRequest {
-
+    private Long facultyId;
     private String certificateNumber;
     private String issuerName;
     private String dateOfIssue;
