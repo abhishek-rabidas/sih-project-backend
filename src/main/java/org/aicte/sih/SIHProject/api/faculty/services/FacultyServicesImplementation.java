@@ -1,5 +1,7 @@
 package org.aicte.sih.SIHProject.api.faculty.services;
 
+import org.aicte.sih.SIHProject.api.certificate.exceptions.FacultyCertificateException;
+import org.aicte.sih.SIHProject.api.faculty.Exception.FacultyException;
 import org.aicte.sih.SIHProject.api.faculty.dao.FacultyRepository;
 import org.aicte.sih.SIHProject.api.faculty.dto.entities.Faculty;
 import org.aicte.sih.SIHProject.api.faculty.dto.request.FacultyRegistrationRequest;
@@ -24,6 +26,9 @@ public class FacultyServicesImplementation implements FacultyServices{
 
     @Override
     public FacultyDataResponse registerFaculty(FacultyRegistrationRequest facultyRegistrationRequest) {
+        if(facultyRepository.countByEmailAddress(facultyRegistrationRequest.getEmailAddress())>0){
+            throw new FacultyException("Faculty Exists");
+        }
         Faculty faculty = new Faculty();
         faculty.setFirstName(facultyRegistrationRequest.getFirstName());
         faculty.setLastName(facultyRegistrationRequest.getLastName());
