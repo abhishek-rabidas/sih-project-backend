@@ -22,8 +22,6 @@ public class FacultyDataResponse {
     private String emailAddress;
     private String description;
     private String joinedOn;
-    private List<FacultyExperience> experiences;
-    private List<FacultyCertificate> certifications;
 
     public FacultyDataResponse(Faculty faculty) {
         this.firstName = faculty.getFirstName();
@@ -36,7 +34,5 @@ public class FacultyDataResponse {
         this.emailAddress = faculty.getEmailAddress();
         this.description = faculty.getDescription();
         this.joinedOn = faculty.getJoinedOn().toString();
-        this.experiences = faculty.getExperiences();
-        this.certifications = faculty.getCertifications();
     }
 }

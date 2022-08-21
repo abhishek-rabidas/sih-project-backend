@@ -2,6 +2,7 @@ package org.aicte.sih.SIHProject.api.certificate.services;
 
 import org.aicte.sih.SIHProject.api.certificate.dto.Entity.FacultyCertificate;
 import org.aicte.sih.SIHProject.api.certificate.dto.Request.FacultyCertificateAddRequest;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 

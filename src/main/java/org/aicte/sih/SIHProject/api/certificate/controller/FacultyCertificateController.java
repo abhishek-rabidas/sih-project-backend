@@ -9,6 +9,7 @@ import org.aicte.sih.SIHProject.api.faculty.dto.entities.Faculty;
 import org.aicte.sih.SIHProject.api.jobs.dto.request.JobPostRequest;
 import org.aicte.sih.SIHProject.commons.APIResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
@@ -24,8 +25,8 @@ public class FacultyCertificateController {
     @Autowired
     private FacultyCertificateService facultyCertificateService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<APIResponse<List<FacultyCertificate>>> getCertificateForFaculty(@PathVariable("id") Long id) {
+    @GetMapping("/fetchAll/{id}")
+    public ResponseEntity<APIResponse<List<FacultyCertificate>>> getCertificatesForFaculty(@PathVariable("id") Long id) {
         APIResponse<List<FacultyCertificate>> response = new APIResponse<>();
         try {
             response.setData(facultyCertificateService.getCertificateForFaculty(id));
@@ -78,10 +79,10 @@ public class FacultyCertificateController {
     }
 
     @PutMapping("/updateCertificate/{id}")
-    public ResponseEntity<APIResponse> updateCertificate(@PathVariable("id") Long id,@RequestBody FacultyCertificate facultyCertificate) {
+    public ResponseEntity<APIResponse> updateCertificate(@PathVariable("id") Long id, @RequestBody FacultyCertificate facultyCertificate) {
         APIResponse response = new APIResponse<>();
         try {
-            facultyCertificateService.updateCertificate(id,facultyCertificate);
+            facultyCertificateService.updateCertificate(id, facultyCertificate);
             return ResponseEntity.ok(response);
         } catch (HttpClientErrorException | HttpServerErrorException e) {
             response.setStatusCode(e.getStatusCode().value());
