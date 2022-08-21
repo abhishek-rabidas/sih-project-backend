@@ -10,4 +10,6 @@ import org.springframework.stereotype.Repository;
 public interface FacultyRepository extends JpaRepository<Faculty, Long> {
     Faculty findOneById(Long id);
 
+    Long countByEmailAddress(String email);
+
 }
