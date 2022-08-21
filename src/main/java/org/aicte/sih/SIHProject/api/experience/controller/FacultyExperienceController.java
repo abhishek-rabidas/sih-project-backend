@@ -1,6 +1,5 @@
 package org.aicte.sih.SIHProject.api.experience.controller;
 
-import org.aicte.sih.SIHProject.api.certificate.dto.Entity.FacultyCertificate;
 import org.aicte.sih.SIHProject.api.experience.dto.entity.FacultyExperience;
 import org.aicte.sih.SIHProject.api.experience.dto.request.FacultyExperienceAddRequest;
 import org.aicte.sih.SIHProject.api.experience.services.FacultyExperienceService;
@@ -40,7 +39,7 @@ public class FacultyExperienceController {
     public ResponseEntity<APIResponse<List<FacultyExperience>>> getExperienceForFaculty(@PathVariable("id") Long id) {
         APIResponse<List<FacultyExperience>> response = new APIResponse<>();
         try {
-            response.setData(facultyExperienceService.listAllExperience(id));
+            response.setData(facultyExperienceService.listAllExperienceByFaculty(id));
             return ResponseEntity.status(response.getStatusCode()).body(response);
         } catch (HttpClientErrorException | HttpServerErrorException e) {
             response.setStatusCode(e.getStatusCode().value());

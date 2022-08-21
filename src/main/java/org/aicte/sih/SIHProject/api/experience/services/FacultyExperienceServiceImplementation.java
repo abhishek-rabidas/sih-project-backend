@@ -7,6 +7,7 @@ import org.aicte.sih.SIHProject.api.college.dto.entities.CollegeEntity;
 import org.aicte.sih.SIHProject.api.experience.dao.FacultyExperienceRepository;
 import org.aicte.sih.SIHProject.api.experience.dto.entity.FacultyExperience;
 import org.aicte.sih.SIHProject.api.experience.dto.request.FacultyExperienceAddRequest;
+import org.aicte.sih.SIHProject.api.faculty.dao.FacultyRepository;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,6 +24,9 @@ public class FacultyExperienceServiceImplementation implements FacultyExperience
     @Autowired
     private FacultyExperienceRepository facultyExperienceRepository;
 
+    @Autowired
+    private FacultyRepository facultyRepository;
+
     @Override
     public FacultyExperience addNewExperience(FacultyExperienceAddRequest request) {
 
@@ -35,6 +39,7 @@ public class FacultyExperienceServiceImplementation implements FacultyExperience
         facultyExperience.setStartYear(request.getStartYear());
         facultyExperience.setEndYear(request.getEndYear());
         facultyExperience.setStartMonth(request.getStartMonth());
+        facultyExperience.setFaculty(facultyRepository.findOneById(request.getFacultyId()));
         return facultyExperienceRepository.save(facultyExperience);
     }
 
@@ -65,7 +70,7 @@ public class FacultyExperienceServiceImplementation implements FacultyExperience
     }
 
     @Override
-    public List<FacultyExperience> listAllExperience(Long id) {
+    public List<FacultyExperience> listAllExperienceByFaculty(Long id) {
         return facultyExperienceRepository.findAllByFaculty(facultyExperienceRepository.findOneById(id));
     }
 
