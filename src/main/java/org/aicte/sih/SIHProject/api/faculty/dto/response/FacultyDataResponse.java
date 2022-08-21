@@ -2,9 +2,9 @@ package org.aicte.sih.SIHProject.api.faculty.dto.response;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.aicte.sih.SIHProject.api.certificate.dto.Entity.FacultyCertificate;
+import org.aicte.sih.SIHProject.api.experience.dto.entity.FacultyExperience;
 import org.aicte.sih.SIHProject.api.faculty.dto.entities.Faculty;
-import org.aicte.sih.SIHProject.api.faculty.dto.entities.FacultyCertification;
-import org.aicte.sih.SIHProject.api.faculty.dto.entities.FacultyExperience;
 
 import java.util.List;
 
@@ -22,8 +22,6 @@ public class FacultyDataResponse {
     private String emailAddress;
     private String description;
     private String joinedOn;
-    private List<FacultyExperience> experiences;
-    private List<FacultyCertification> certifications;
 
     public FacultyDataResponse(Faculty faculty) {
         this.firstName = faculty.getFirstName();
@@ -36,7 +34,5 @@ public class FacultyDataResponse {
         this.emailAddress = faculty.getEmailAddress();
         this.description = faculty.getDescription();
         this.joinedOn = faculty.getJoinedOn().toString();
-        this.experiences = faculty.getExperiences();
-        this.certifications = faculty.getCertifications();
     }
 }
