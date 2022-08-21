@@ -17,6 +17,7 @@ public class FacultyCertificateServiceImplementation implements FacultyCertifica
     private FacultyRepository facultyRepository;
     @Autowired
     private FacultyCertificateRepository facultyCertificateRepository;
+
     @Override
     public List<FacultyCertificate> getCertificateForFaculty(Long id) {
         return facultyCertificateRepository.findAllByFaculty(facultyRepository.findOneById(id));

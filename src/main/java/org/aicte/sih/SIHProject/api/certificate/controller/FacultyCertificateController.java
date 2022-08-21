@@ -3,13 +3,8 @@ package org.aicte.sih.SIHProject.api.certificate.controller;
 import org.aicte.sih.SIHProject.api.certificate.dto.Entity.FacultyCertificate;
 import org.aicte.sih.SIHProject.api.certificate.dto.Request.FacultyCertificateAddRequest;
 import org.aicte.sih.SIHProject.api.certificate.services.FacultyCertificateService;
-import org.aicte.sih.SIHProject.api.college.dto.entities.CollegeEntity;
-import org.aicte.sih.SIHProject.api.college.dto.request.CollegeRegistrationRequest;
-import org.aicte.sih.SIHProject.api.faculty.dto.entities.Faculty;
-import org.aicte.sih.SIHProject.api.jobs.dto.request.JobPostRequest;
 import org.aicte.sih.SIHProject.commons.APIResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
@@ -42,6 +37,7 @@ public class FacultyCertificateController {
         }
     }
 
+    //TODO Pagination
 
     @PostMapping
     public ResponseEntity<APIResponse<FacultyCertificate>> registerCertificate(@RequestBody FacultyCertificateAddRequest facultyCertificateAddRequest) {
@@ -79,10 +75,11 @@ public class FacultyCertificateController {
     }
 
     @PutMapping("/updateCertificate/{id}")
-    public ResponseEntity<APIResponse> updateCertificate(@PathVariable("id") Long id, @RequestBody FacultyCertificate facultyCertificate) {
-        APIResponse response = new APIResponse<>();
+    public ResponseEntity<APIResponse<FacultyCertificate>> updateCertificate(@PathVariable("id") Long id,
+                                                                             @RequestBody FacultyCertificate facultyCertificate) {
+        APIResponse<FacultyCertificate> response = new APIResponse<>();
         try {
-            facultyCertificateService.updateCertificate(id, facultyCertificate);
+            response.setData(facultyCertificateService.updateCertificate(id, facultyCertificate));
             return ResponseEntity.ok(response);
         } catch (HttpClientErrorException | HttpServerErrorException e) {
             response.setStatusCode(e.getStatusCode().value());
