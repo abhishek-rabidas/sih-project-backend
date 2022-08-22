@@ -17,6 +17,7 @@ import org.springframework.web.client.HttpServerErrorException;
 
 @RestController
 @RequestMapping("/api/v1/posting")
+@CrossOrigin()
 public class JobPostingController {
 
     @Autowired
