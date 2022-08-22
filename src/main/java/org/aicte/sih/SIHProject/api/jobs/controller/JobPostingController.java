@@ -1,5 +1,6 @@
 package org.aicte.sih.SIHProject.api.jobs.controller;
 
+import org.aicte.sih.SIHProject.api.jobs.dto.Entity.AppliedJob;
 import org.aicte.sih.SIHProject.api.jobs.dto.Entity.JobPost;
 import org.aicte.sih.SIHProject.api.jobs.dto.Response.JobApplicationResponse;
 import org.aicte.sih.SIHProject.api.jobs.dto.request.ApplyForJobRequest;
@@ -14,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/posting")
@@ -112,10 +115,10 @@ public class JobPostingController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<APIResponse<Page<JobApplicationResponse>>> getApplications(@RequestParam("pageNumber") int pageNumber,
-                                                                         @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
-                                                                         @RequestParam("sortBy") String sortBy, @PathVariable("id") Long id) {
-        APIResponse<Page<JobApplicationResponse>> response = new APIResponse<>();
+    public ResponseEntity<APIResponse<List<JobApplicationResponse>>> getApplications(@RequestParam("pageNumber") int pageNumber,
+                                                                                     @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+                                                                                     @RequestParam("sortBy") String sortBy, @PathVariable("id") Long id) {
+        APIResponse<List<JobApplicationResponse>> response = new APIResponse<>();
         PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy).descending());
         try {
             response.setData(postingServices.getJobApplicants(id, pageRequest));

@@ -19,6 +19,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class JobPostingServicesImplementation implements JobPostingServices {
@@ -135,10 +137,10 @@ public class JobPostingServicesImplementation implements JobPostingServices {
     }
 
     @Override
-    public Page<JobApplicationResponse> getJobApplicants(Long id, PageRequest pageRequest) throws IncorrectJobPostingValues {
+    public List<JobApplicationResponse> getJobApplicants(Long id, PageRequest pageRequest) throws IncorrectJobPostingValues {
         JobPost jobPost = jobPostingRepository.findOneById(id);
         if (jobPost == null)
             throw new IncorrectJobPostingValues("Job Post Not Found");
-        else return appliedJobRepository.findAllByAppliedPost(jobPost, pageRequest);
+        else return appliedJobRepository.findAllByAppliedPost(jobPost, pageRequest).map(JobApplicationResponse::new).stream().collect(Collectors.toList());
     }
 }

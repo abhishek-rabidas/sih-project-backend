@@ -14,5 +14,5 @@ import java.util.List;
 @Repository
 public interface AppliedJobRepository extends JpaRepository<AppliedJob, Long> {
     List<AppliedJob> findAllByFaculty(Faculty faculty);
-    Page<JobApplicationResponse> findAllByAppliedPost(JobPost jobPost, Pageable pageable);
+    Page<AppliedJob> findAllByAppliedPost(JobPost jobPost, Pageable pageable);
 }
