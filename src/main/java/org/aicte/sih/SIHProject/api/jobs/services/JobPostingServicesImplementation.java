@@ -84,10 +84,12 @@ public class JobPostingServicesImplementation implements JobPostingServices {
     }
 
     @Override
-    public void applyForJobPost(ApplyForJobRequest request) {
+    public void applyForJobPost(ApplyForJobRequest request) throws IncorrectJobPostingValues {
+        if (appliedJobRepository.countByAppliedPostAndFaculty(request.getJobPostId(), request.getFacultyId()) > 0)
+            throw new IncorrectJobPostingValues("Already Applied For this job post!");
         AppliedJob appliedJob = new AppliedJob();
         appliedJob.setAppliedOn(LocalDateTime.now());
-        appliedJob.setAppliedPost(jobPostingRepository.findOneById(request.getJobPosId()));
+        appliedJob.setAppliedPost(jobPostingRepository.findOneById(request.getJobPostId()));
         appliedJob.setFaculty(facultyRepository.findOneById(request.getFacultyId()));
         appliedJob.setCoverLetter(request.getCoverLetter());
         appliedJobRepository.save(appliedJob);

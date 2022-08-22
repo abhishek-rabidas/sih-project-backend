@@ -27,7 +27,7 @@ public class FacultyServicesImplementation implements FacultyServices{
     @Override
     public FacultyDataResponse registerFaculty(FacultyRegistrationRequest facultyRegistrationRequest) {
         if(facultyRepository.countByEmailAddress(facultyRegistrationRequest.getEmailAddress())>0){
-            throw new FacultyException("Faculty Exists");
+            throw new FacultyException("Faculty Exists with this email address");
         }
         Faculty faculty = new Faculty();
         faculty.setFirstName(facultyRegistrationRequest.getFirstName());
@@ -35,6 +35,7 @@ public class FacultyServicesImplementation implements FacultyServices{
         faculty.setNickName(facultyRegistrationRequest.getNickName());
         faculty.setStreet(facultyRegistrationRequest.getStreet());
         faculty.setCity(facultyRegistrationRequest.getCity());
+        faculty.setState(facultyRegistrationRequest.getState());
         faculty.setPinCode(facultyRegistrationRequest.getPinCode());
         faculty.setPhoneNumber(facultyRegistrationRequest.getPhoneNumber());
         faculty.setEmailAddress(facultyRegistrationRequest.getEmailAddress());

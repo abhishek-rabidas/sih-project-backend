@@ -5,6 +5,6 @@ import lombok.Getter;
 @Getter
 public class ApplyForJobRequest {
     private String coverLetter;
-    private Long jobPosId;
+    private Long jobPostId;
     private Long facultyId;
 }
