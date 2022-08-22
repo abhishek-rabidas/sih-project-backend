@@ -2,9 +2,11 @@ package org.aicte.sih.SIHProject.api.experience.dto.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.aicte.sih.SIHProject.api.faculty.dto.entities.Faculty;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 
 @Getter
 @Setter
@@ -19,4 +21,6 @@ public class FacultyExperience extends AbstractPersistable<Long> {
     private int endYear;
     private String skills;
     private String documentUrl;
+    @ManyToOne
+    private Faculty faculty;
 }
