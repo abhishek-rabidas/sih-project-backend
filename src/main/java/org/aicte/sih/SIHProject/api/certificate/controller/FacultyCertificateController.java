@@ -39,7 +39,6 @@ public class FacultyCertificateController {
     }
 
     //TODO Pagination
-
     @PostMapping
     public ResponseEntity<APIResponse<FacultyCertificate>> registerCertificate(@RequestBody FacultyCertificateAddRequest facultyCertificateAddRequest) {
         APIResponse<FacultyCertificate> response = new APIResponse<>();
