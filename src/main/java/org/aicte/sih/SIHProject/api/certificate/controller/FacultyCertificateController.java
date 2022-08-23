@@ -58,11 +58,11 @@ public class FacultyCertificateController {
     }
 
 
-    @PostMapping("/closeCertificate/{id}")
-    public ResponseEntity<APIResponse> markCertificateClosed(@PathVariable("id") Long id) {
+    @PostMapping("/closeCertificate/{facultyId}/{certificateId}")
+    public ResponseEntity<APIResponse> markCertificateClosed(@PathVariable("facultyId") Long facultyId,@PathVariable("certificateId") Long certificateId) {
         APIResponse response = new APIResponse<>();
         try {
-            facultyCertificateService.markCertificateClosed(id);
+            facultyCertificateService.markCertificateClosed(facultyId,certificateId);
             return ResponseEntity.ok(response);
         } catch (HttpClientErrorException | HttpServerErrorException e) {
             response.setStatusCode(e.getStatusCode().value());
@@ -75,12 +75,13 @@ public class FacultyCertificateController {
         }
     }
 
-    @PutMapping("/updateCertificate/{id}")
-    public ResponseEntity<APIResponse<FacultyCertificate>> updateCertificate(@PathVariable("id") Long id,
+    @PutMapping("/updateCertificate/{facultyId}/{certificateId}")
+    public ResponseEntity<APIResponse<FacultyCertificate>> updateCertificate(@PathVariable("facultyId") Long facultyId,
+                                                                             @PathVariable("certificateId") Long certificateId,
                                                                              @RequestBody FacultyCertificate facultyCertificate) {
         APIResponse<FacultyCertificate> response = new APIResponse<>();
         try {
-            response.setData(facultyCertificateService.updateCertificate(id, facultyCertificate));
+            response.setData(facultyCertificateService.updateCertificate(facultyId,certificateId, facultyCertificate));
             return ResponseEntity.ok(response);
         } catch (HttpClientErrorException | HttpServerErrorException e) {
             response.setStatusCode(e.getStatusCode().value());
