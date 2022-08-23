@@ -6,6 +6,7 @@ import org.aicte.sih.SIHProject.api.college.dto.entities.CollegeEntity;
 import org.aicte.sih.SIHProject.api.college.dto.request.CollegeRegistrationRequest;
 import org.aicte.sih.SIHProject.api.jobs.dao.JobPostingRepository;
 import org.aicte.sih.SIHProject.api.jobs.dto.Entity.JobPost;
+import org.aicte.sih.SIHProject.emailing.EmailServices;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,6 +24,9 @@ public class CollegeServiceImplementation implements CollegeService {
 
     @Autowired
     private JobPostingRepository jobPostingRepository;
+
+    @Autowired
+    private EmailServices emailServices;
 
     @Override
     public List<CollegeEntity> getRegisteredColleges() {
@@ -49,6 +53,7 @@ public class CollegeServiceImplementation implements CollegeService {
         college.setEmail(collegeDetails.getEmail());
         college.setCoverImageBaseUrl(collegeDetails.getCoverImageBaseUrl());
         college.setActive(true);
+        emailServices.sendCollegeRegistrationSuccessfulEmail(college);
         return collegeRepository.save(college);
     }
 
