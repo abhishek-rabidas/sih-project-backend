@@ -28,7 +28,6 @@ public class FacultyCertificateServiceImplementation implements FacultyCertifica
        if(facultyCertificateRepository.countByCertificateNumber(facultyCertificate.getCertificateNumber())>0){
            throw new FacultyCertificateException("Certificate Exists");
        }
-
         FacultyCertificate certificate = new FacultyCertificate();
         certificate.setCertificateNumber(facultyCertificate.getCertificateNumber());
         certificate.setIssuerName(facultyCertificate.getIssuerName());
@@ -40,26 +39,29 @@ public class FacultyCertificateServiceImplementation implements FacultyCertifica
     }
 
     @Override
-    public void markCertificateClosed(Long id) {
-        FacultyCertificate facultyCertificate = facultyCertificateRepository.findOneById(id);
-        facultyCertificate.setActive(false);
-        facultyCertificateRepository.save(facultyCertificate);
+    public void markCertificateClosed(Long facultyId, Long certificateId) {
+        FacultyCertificate facultyCertificate = facultyCertificateRepository.findOneById(certificateId);
+        if(facultyId==facultyCertificate.getFaculty().getId()){
+            facultyCertificate.setActive(false);
+            facultyCertificateRepository.save(facultyCertificate);
+        }else{
+            throw new FacultyCertificateException("Not Authorized");
+        }
     }
 
     @Override
-    public FacultyCertificate updateCertificate(Long id, FacultyCertificate facultyCertificate) {
-        FacultyCertificate certificate = facultyCertificateRepository.findOneById(id);
+    public FacultyCertificate updateCertificate(Long facultyId, Long certificateId, FacultyCertificate facultyCertificate) {
+        FacultyCertificate certificate = facultyCertificateRepository.findOneById(certificateId);
         if (certificate == null) {
             throw new FacultyCertificateException("Certificate Not Found");
-        } else {
-
+        } else if(facultyId==facultyCertificate.getFaculty().getId()) {
             certificate.setCertificateNumber(facultyCertificate.getCertificateNumber());
             certificate.setActive(true);
             certificate.setIssuerName(facultyCertificate.getIssuerName());
             certificate.setValidTill(facultyCertificate.getValidTill());
             certificate.setDateOfIssue(facultyCertificate.getDateOfIssue());
-
             return facultyCertificateRepository.save(facultyCertificate);
         }
+        throw  new FacultyCertificateException("Not Authirized");
     }
 }

@@ -1,21 +1,15 @@
 package org.aicte.sih.SIHProject.api.experience.services;
 
-import org.aicte.sih.SIHProject.api.certificate.dto.Entity.FacultyCertificate;
 import org.aicte.sih.SIHProject.api.certificate.exceptions.FacultyCertificateException;
-import org.aicte.sih.SIHProject.api.college.Exception.CollegeExceptions;
-import org.aicte.sih.SIHProject.api.college.dto.entities.CollegeEntity;
 import org.aicte.sih.SIHProject.api.experience.dao.FacultyExperienceRepository;
 import org.aicte.sih.SIHProject.api.experience.dto.entity.FacultyExperience;
 import org.aicte.sih.SIHProject.api.experience.dto.request.FacultyExperienceAddRequest;
+import org.aicte.sih.SIHProject.api.faculty.Exception.FacultyException;
 import org.aicte.sih.SIHProject.api.faculty.dao.FacultyRepository;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Locale;
 
 @Service
 public class FacultyExperienceServiceImplementation implements FacultyExperienceService {
@@ -44,11 +38,11 @@ public class FacultyExperienceServiceImplementation implements FacultyExperience
     }
 
     @Override
-    public FacultyExperience editExperience(Long id, FacultyExperience request) {
-        FacultyExperience experience = facultyExperienceRepository.findOneById(id);
+    public FacultyExperience editExperience(Long experienceId, Long facultyId, FacultyExperience request) {
+        FacultyExperience experience = facultyExperienceRepository.findOneById(experienceId);
         if (experience == null) {
-            throw new FacultyCertificateException("Certificate Not Found");
-        } else {
+            throw new FacultyCertificateException("Experience Not Found");
+        } else if (experience.getFaculty().getId() == facultyId) {
 
             experience.setSkills(request.getSkills());
             experience.setOrganization(request.getOrganization());
@@ -58,15 +52,19 @@ public class FacultyExperienceServiceImplementation implements FacultyExperience
             experience.setStartMonth(request.getStartMonth());
             experience.setEndMonth(request.getEndMonth());
             experience.setOverview(request.getOverview());
-
             return facultyExperienceRepository.save(experience);
         }
+        throw new FacultyException("Not Authorized");
     }
 
     @Override
-    public void deleteExperience(Long experienceId) {
-        facultyExperienceRepository.deleteById(experienceId);
-
+    public void deleteExperience(Long facultyId, Long experienceId) {
+        FacultyExperience facultyExperience = facultyExperienceRepository.findOneById(experienceId);
+        if (facultyId == facultyExperience.getFaculty().getId()) {
+            facultyExperienceRepository.deleteById(experienceId);
+        } else {
+            throw new FacultyException("Not Authorized");
+        }
     }
 
     @Override

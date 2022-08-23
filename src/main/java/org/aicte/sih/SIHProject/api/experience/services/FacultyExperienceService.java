@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface FacultyExperienceService {
     FacultyExperience addNewExperience(FacultyExperienceAddRequest request);
-    FacultyExperience editExperience(Long id,FacultyExperience request);
-    void deleteExperience(Long experienceId);
+    FacultyExperience editExperience(Long id, Long facultyId, FacultyExperience request);
+    void deleteExperience(Long facultyId, Long experienceId);
     List<FacultyExperience> listAllExperienceByFaculty(Long facultyId);
     FacultyExperience viewExperience(Long facultyId, Long experienceId);
 }

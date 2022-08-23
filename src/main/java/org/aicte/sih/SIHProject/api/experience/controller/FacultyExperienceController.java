@@ -53,11 +53,11 @@ public class FacultyExperienceController {
         }
     }
 
-    @PostMapping("/closeExperience/{id}")
-    public ResponseEntity<APIResponse> deleteExperience(@PathVariable("id") Long id) {
+    @DeleteMapping("/deleteExperience/{facultyId}/{experienceId}")
+    public ResponseEntity<APIResponse> deleteExperience(@PathVariable("facultyId") Long facultyId,@PathVariable Long experienceId) {
         APIResponse response = new APIResponse<>();
         try {
-            facultyExperienceService.deleteExperience(id);
+            facultyExperienceService.deleteExperience(facultyId,experienceId);
             return ResponseEntity.ok(response);
         } catch (HttpClientErrorException | HttpServerErrorException e) {
             response.setStatusCode(e.getStatusCode().value());
@@ -70,11 +70,11 @@ public class FacultyExperienceController {
         }
     }
 
-    @PutMapping("/updateExperience/{id}")
-    public ResponseEntity<APIResponse> updateExperience(@PathVariable("id") Long id, @RequestBody FacultyExperience facultyExperience) {
+    @PutMapping("/updateExperience/{facultyId}/{experienceId}")
+    public ResponseEntity<APIResponse> updateExperience(@PathVariable("facultyId") Long facultyId, @PathVariable("experienceId") Long experienceId, @RequestBody FacultyExperience facultyExperience) {
         APIResponse response = new APIResponse<>();
         try {
-            facultyExperienceService.editExperience(id, facultyExperience);
+            facultyExperienceService.editExperience(experienceId,facultyId, facultyExperience);
             return ResponseEntity.ok(response);
         } catch (HttpClientErrorException | HttpServerErrorException e) {
             response.setStatusCode(e.getStatusCode().value());
