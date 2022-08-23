@@ -2,7 +2,6 @@ package org.aicte.sih.SIHProject.api.certificate.services;
 
 import org.aicte.sih.SIHProject.api.certificate.dto.Entity.FacultyCertificate;
 import org.aicte.sih.SIHProject.api.certificate.dto.Request.FacultyCertificateAddRequest;
-import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -12,7 +11,7 @@ public interface FacultyCertificateService {
 
     FacultyCertificate setCertificateDetails(FacultyCertificateAddRequest facultyCertificate);
 
-    void markCertificateClosed(Long id);
+    void markCertificateClosed(Long id, Long certificateId);
 
-    FacultyCertificate updateCertificate(Long id, FacultyCertificate facultyCertificate);
+    FacultyCertificate updateCertificate(Long facultyId, Long certificateId, FacultyCertificate facultyCertificate);
 }
