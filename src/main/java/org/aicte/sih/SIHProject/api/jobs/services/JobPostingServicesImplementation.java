@@ -13,6 +13,7 @@ import org.aicte.sih.SIHProject.api.jobs.dto.Response.JobApplicationResponse;
 import org.aicte.sih.SIHProject.api.jobs.dto.request.ApplyForJobRequest;
 import org.aicte.sih.SIHProject.api.jobs.dto.request.JobPostRequest;
 import org.aicte.sih.SIHProject.api.jobs.exceptions.IncorrectJobPostingValues;
+import org.aicte.sih.SIHProject.emailing.EmailServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -36,6 +37,9 @@ public class JobPostingServicesImplementation implements JobPostingServices {
 
     @Autowired
     private AppliedJobRepository appliedJobRepository;
+
+    @Autowired
+    private EmailServices emailServices;
 
     @Override
     public JobPost addNewJobPost(JobPostRequest jobPostRequest) throws IncorrectJobPostingValues {
@@ -91,11 +95,17 @@ public class JobPostingServicesImplementation implements JobPostingServices {
         AppliedJob appliedJob = new AppliedJob();
         appliedJob.setAppliedOn(LocalDateTime.now());
         JobPost jobPost = jobPostingRepository.findOneById(request.getJobPostId());
-        jobPost.setTotalApplicants(jobPost.getTotalApplicants()+1);
+        jobPost.setTotalApplicants(jobPost.getTotalApplicants() + 1);
         appliedJob.setAppliedPost(jobPostingRepository.save(jobPost));
         appliedJob.setFaculty(facultyRepository.findOneById(request.getFacultyId()));
         appliedJob.setCoverLetter(request.getCoverLetter());
-        appliedJobRepository.save(appliedJob);
+        try {
+            emailServices.sendAppliedSuccessfullyEmail(appliedJob);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex.getMessage());
+        } finally {
+            appliedJobRepository.save(appliedJob);
+        }
     }
 
     @Override

@@ -45,15 +45,15 @@ public class EmailServices {
         smtpEmailSender.sendMessage(email);
     }
 
-    public void sendAppliedSuccessfullyEmail(JobPost jobPost, Faculty faculty) {
+    public void sendAppliedSuccessfullyEmail(AppliedJob appliedJob) {
         MessageEmail email = new MessageEmail();
         email.setSubject("Successfully Applied For Job Post | Faculty Recruitment System");
-        email.setTo(Collections.singletonList(faculty.getEmailAddress()));
-        String message = faculty.getFirstName() + " " + faculty.getLastName() + " you have successfully applied for /n" +
+        email.setTo(Collections.singletonList(appliedJob.getFaculty().getEmailAddress()));
+        String message = appliedJob.getFaculty().getFirstName() + " " + appliedJob.getFaculty().getLastName() + " you have successfully applied for /n" +
                 "Job Post Details:/n" +
-                jobPost.getHeading() + "/n" +
-                jobPost.getDescription() + "/n" +
-                jobPost.getCollegeName() + "/n" +
+                appliedJob.getAppliedPost().getHeading() + "/n" +
+                appliedJob.getAppliedPost().getDescription() + "/n" +
+                appliedJob.getAppliedPost().getCollegeName() + "/n" +
                 "/n" +
                 "All the best 👍";
         email.setBody(message);
