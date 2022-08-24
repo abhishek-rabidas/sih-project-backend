@@ -1,9 +1,9 @@
 package org.aicte.sih.SIHProject.api.course.exception;
 
-public class FacultyCourseException extends RuntimeException{
+public class CollegeCourseException extends RuntimeException{
     private String message;
 
-    public FacultyCourseException(String message){
+    public CollegeCourseException(String message){
         super(message);
     }
 }

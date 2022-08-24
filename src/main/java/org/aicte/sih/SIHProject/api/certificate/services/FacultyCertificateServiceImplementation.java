@@ -54,7 +54,7 @@ public class FacultyCertificateServiceImplementation implements FacultyCertifica
         FacultyCertificate certificate = facultyCertificateRepository.findOneById(certificateId);
         if (certificate == null) {
             throw new FacultyCertificateException("Certificate Not Found");
-        } else if(facultyId==facultyCertificate.getFaculty().getId()) {
+        } else if(facultyId==certificate.getFaculty().getId()) {
             certificate.setCertificateNumber(facultyCertificate.getCertificateNumber());
             certificate.setActive(true);
             certificate.setIssuerName(facultyCertificate.getIssuerName());
@@ -62,6 +62,6 @@ public class FacultyCertificateServiceImplementation implements FacultyCertifica
             certificate.setDateOfIssue(facultyCertificate.getDateOfIssue());
             return facultyCertificateRepository.save(facultyCertificate);
         }
-        throw  new FacultyCertificateException("Not Authirized");
+        throw  new FacultyCertificateException("Not Authorized");
     }
 }
