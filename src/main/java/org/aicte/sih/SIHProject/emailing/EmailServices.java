@@ -100,4 +100,22 @@ public class EmailServices {
         smtpEmailSender.sendMessage(email);
     }
 
+    public void newJobPostedEmail(JobPost jobPost) {
+        MessageEmail email = new MessageEmail();
+        email.setSubject("Congratulations | Faculty Recruitment System");
+        email.setTo(Collections.singletonList(jobPost.getCollege().getEmail()));
+        String message = "New Teaching Post Successfully Posted \n\n" +
+                "Teaching Post Details:- \n" +
+                "College Name: " + jobPost.getCollegeName() + "\n" +
+                "Address: " + jobPost.getCity() + ", " + jobPost.getState() + "\n" +
+                "Contact Details: \n" +
+                "Email Address: " + jobPost.getCollege().getEmail() + "\n" +
+                "Phone: " + jobPost.getCollege().getPhone() + "\n" +
+                jobPost.getHeading() + "\n" +
+                jobPost.getDescription() + "\n";
+        email.setBody(message);
+        email.setHtml(false);
+        smtpEmailSender.sendMessage(email);
+    }
+
 }

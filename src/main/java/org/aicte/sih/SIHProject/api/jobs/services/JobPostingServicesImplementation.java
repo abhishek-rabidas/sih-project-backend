@@ -80,7 +80,13 @@ public class JobPostingServicesImplementation implements JobPostingServices {
                     throw new IncorrectJobPostingValues("Unidentified Role Type");
             }
             jobPost.setOpen(true);
-            return jobPostingRepository.save(jobPost);
+            try {
+                emailServices.newJobPostedEmail(jobPost);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex.getMessage());
+            } finally {
+                return jobPostingRepository.save(jobPost);
+            }
         }
     }
 
