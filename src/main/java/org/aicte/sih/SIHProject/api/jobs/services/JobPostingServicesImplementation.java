@@ -101,6 +101,7 @@ public class JobPostingServicesImplementation implements JobPostingServices {
         appliedJob.setCoverLetter(request.getCoverLetter());
         try {
             emailServices.sendAppliedSuccessfullyEmail(appliedJob);
+            emailServices.sendNewApplicantEmail(appliedJob);
         } catch (Exception ex) {
             throw new RuntimeException(ex.getMessage());
         } finally {
