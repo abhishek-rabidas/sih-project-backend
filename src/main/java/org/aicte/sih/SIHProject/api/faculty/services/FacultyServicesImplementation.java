@@ -8,6 +8,7 @@ import org.aicte.sih.SIHProject.api.faculty.dto.request.FacultyRegistrationReque
 import org.aicte.sih.SIHProject.api.faculty.dto.response.FacultyDataResponse;
 import org.aicte.sih.SIHProject.api.jobs.dao.AppliedJobRepository;
 import org.aicte.sih.SIHProject.api.jobs.dto.Response.FacultyAppliedJobResponse;
+import org.aicte.sih.SIHProject.emailing.EmailServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class FacultyServicesImplementation implements FacultyServices{
+public class FacultyServicesImplementation implements FacultyServices {
 
     @Autowired
     private FacultyRepository facultyRepository;
@@ -24,9 +25,12 @@ public class FacultyServicesImplementation implements FacultyServices{
     @Autowired
     private AppliedJobRepository appliedJobRepository;
 
+    @Autowired
+    private EmailServices emailServices;
+
     @Override
     public FacultyDataResponse registerFaculty(FacultyRegistrationRequest facultyRegistrationRequest) {
-        if(facultyRepository.countByEmailAddress(facultyRegistrationRequest.getEmailAddress())>0){
+        if (facultyRepository.countByEmailAddress(facultyRegistrationRequest.getEmailAddress()) > 0) {
             throw new FacultyException("Faculty Exists with this email address");
         }
         Faculty faculty = new Faculty();
@@ -41,7 +45,13 @@ public class FacultyServicesImplementation implements FacultyServices{
         faculty.setEmailAddress(facultyRegistrationRequest.getEmailAddress());
         faculty.setDescription(facultyRegistrationRequest.getDescription());
         faculty.setJoinedOn(new Date());
-        return new FacultyDataResponse(facultyRepository.save(faculty));
+        try {
+            emailServices.sendFacultyRegistrationSuccessfulEmail(faculty);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex.getMessage());
+        } finally {
+            return new FacultyDataResponse(facultyRepository.save(faculty));
+        }
     }
 
     @Override
