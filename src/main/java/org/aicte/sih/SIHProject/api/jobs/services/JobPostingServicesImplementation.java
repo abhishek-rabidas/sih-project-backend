@@ -4,6 +4,7 @@ import org.aicte.sih.SIHProject.api.college.Exception.CollegeExceptions;
 import org.aicte.sih.SIHProject.api.college.Repository.CollegeRepository;
 import org.aicte.sih.SIHProject.api.college.dto.entities.CollegeEntity;
 import org.aicte.sih.SIHProject.api.faculty.dao.FacultyRepository;
+import org.aicte.sih.SIHProject.api.faculty.dto.entities.Faculty;
 import org.aicte.sih.SIHProject.api.jobs.dao.AppliedJobRepository;
 import org.aicte.sih.SIHProject.api.jobs.dao.JobPostingRepository;
 import org.aicte.sih.SIHProject.api.jobs.dto.EmploymentType;
@@ -13,6 +14,8 @@ import org.aicte.sih.SIHProject.api.jobs.dto.Response.JobApplicationResponse;
 import org.aicte.sih.SIHProject.api.jobs.dto.request.ApplyForJobRequest;
 import org.aicte.sih.SIHProject.api.jobs.dto.request.JobPostRequest;
 import org.aicte.sih.SIHProject.api.jobs.exceptions.IncorrectJobPostingValues;
+import org.aicte.sih.SIHProject.api.jobs.exceptions.JobPostingDataFound;
+import org.aicte.sih.SIHProject.emailing.EmailServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -36,6 +39,9 @@ public class JobPostingServicesImplementation implements JobPostingServices {
 
     @Autowired
     private AppliedJobRepository appliedJobRepository;
+
+    @Autowired
+    private EmailServices emailServices;
 
     @Override
     public JobPost addNewJobPost(JobPostRequest jobPostRequest) throws IncorrectJobPostingValues {
@@ -74,7 +80,13 @@ public class JobPostingServicesImplementation implements JobPostingServices {
                     throw new IncorrectJobPostingValues("Unidentified Role Type");
             }
             jobPost.setOpen(true);
-            return jobPostingRepository.save(jobPost);
+            try {
+                emailServices.newJobPostedEmail(jobPost);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex.getMessage());
+            } finally {
+                return jobPostingRepository.save(jobPost);
+            }
         }
     }
 
@@ -91,11 +103,18 @@ public class JobPostingServicesImplementation implements JobPostingServices {
         AppliedJob appliedJob = new AppliedJob();
         appliedJob.setAppliedOn(LocalDateTime.now());
         JobPost jobPost = jobPostingRepository.findOneById(request.getJobPostId());
-        jobPost.setTotalApplicants(jobPost.getTotalApplicants()+1);
+        jobPost.setTotalApplicants(jobPost.getTotalApplicants() + 1);
         appliedJob.setAppliedPost(jobPostingRepository.save(jobPost));
         appliedJob.setFaculty(facultyRepository.findOneById(request.getFacultyId()));
         appliedJob.setCoverLetter(request.getCoverLetter());
-        appliedJobRepository.save(appliedJob);
+        try {
+            emailServices.sendAppliedSuccessfullyEmail(appliedJob);
+            emailServices.sendNewApplicantEmail(appliedJob);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex.getMessage());
+        } finally {
+            appliedJobRepository.save(appliedJob);
+        }
     }
 
     @Override
@@ -147,5 +166,22 @@ public class JobPostingServicesImplementation implements JobPostingServices {
         if (jobPost == null)
             throw new IncorrectJobPostingValues("Job Post Not Found");
         else return appliedJobRepository.findAllByAppliedPost(jobPost, pageRequest).map(JobApplicationResponse::new).stream().collect(Collectors.toList());
+    }
+
+    @Override
+    public void shortlistFaculty(Long facultyId, Long jobPostId) throws JobPostingDataFound {
+        JobPost jobPost = jobPostingRepository.findOneById(jobPostId);
+        Faculty faculty = facultyRepository.findOneById(facultyId);
+        if (jobPost.isOpen() && jobPost != null && faculty != null) {
+            try {
+                emailServices.sendShortlistedEmail(faculty, jobPost);
+                jobPost.setOpen(false);
+                jobPostingRepository.save(jobPost);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex.getMessage());
+            }
+        } else {
+            throw new JobPostingDataFound("Details Does Not Found");
+        }
     }
 }
