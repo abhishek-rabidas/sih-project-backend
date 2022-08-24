@@ -49,12 +49,12 @@ public class EmailServices {
         MessageEmail email = new MessageEmail();
         email.setSubject("Successfully Applied For Job Post | Faculty Recruitment System");
         email.setTo(Collections.singletonList(appliedJob.getFaculty().getEmailAddress()));
-        String message = appliedJob.getFaculty().getFirstName() + " " + appliedJob.getFaculty().getLastName() + " you have successfully applied for /n" +
-                "Job Post Details:/n" +
-                appliedJob.getAppliedPost().getHeading() + "/n" +
-                appliedJob.getAppliedPost().getDescription() + "/n" +
-                appliedJob.getAppliedPost().getCollegeName() + "/n" +
-                "/n" +
+        String message = appliedJob.getFaculty().getFirstName() + " " + appliedJob.getFaculty().getLastName() + " you have successfully applied for \n" +
+                "Job Post Details:\n" +
+                appliedJob.getAppliedPost().getHeading() + "\n" +
+                appliedJob.getAppliedPost().getDescription() + "\n" +
+                appliedJob.getAppliedPost().getCollegeName() + "\n" +
+                "\n" +
                 "All the best 👍";
         email.setBody(message);
         email.setHtml(false);
