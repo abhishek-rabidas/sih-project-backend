@@ -53,8 +53,13 @@ public class CollegeServiceImplementation implements CollegeService {
         college.setEmail(collegeDetails.getEmail());
         college.setCoverImageBaseUrl(collegeDetails.getCoverImageBaseUrl());
         college.setActive(true);
-        emailServices.sendCollegeRegistrationSuccessfulEmail(college);
-        return collegeRepository.save(college);
+        try {
+            emailServices.sendCollegeRegistrationSuccessfulEmail(college);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        } finally {
+            return collegeRepository.save(college);
+        }
     }
 
     @Override
