@@ -4,6 +4,7 @@ import org.aicte.sih.SIHProject.api.college.Exception.CollegeExceptions;
 import org.aicte.sih.SIHProject.api.college.Repository.CollegeRepository;
 import org.aicte.sih.SIHProject.api.college.dto.entities.CollegeEntity;
 import org.aicte.sih.SIHProject.api.faculty.dao.FacultyRepository;
+import org.aicte.sih.SIHProject.api.faculty.dto.entities.Faculty;
 import org.aicte.sih.SIHProject.api.jobs.dao.AppliedJobRepository;
 import org.aicte.sih.SIHProject.api.jobs.dao.JobPostingRepository;
 import org.aicte.sih.SIHProject.api.jobs.dto.EmploymentType;
@@ -13,6 +14,7 @@ import org.aicte.sih.SIHProject.api.jobs.dto.Response.JobApplicationResponse;
 import org.aicte.sih.SIHProject.api.jobs.dto.request.ApplyForJobRequest;
 import org.aicte.sih.SIHProject.api.jobs.dto.request.JobPostRequest;
 import org.aicte.sih.SIHProject.api.jobs.exceptions.IncorrectJobPostingValues;
+import org.aicte.sih.SIHProject.api.jobs.exceptions.JobPostingDataFound;
 import org.aicte.sih.SIHProject.emailing.EmailServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -158,5 +160,22 @@ public class JobPostingServicesImplementation implements JobPostingServices {
         if (jobPost == null)
             throw new IncorrectJobPostingValues("Job Post Not Found");
         else return appliedJobRepository.findAllByAppliedPost(jobPost, pageRequest).map(JobApplicationResponse::new).stream().collect(Collectors.toList());
+    }
+
+    @Override
+    public void shortlistFaculty(Long facultyId, Long jobPostId) throws JobPostingDataFound {
+        JobPost jobPost = jobPostingRepository.findOneById(jobPostId);
+        Faculty faculty = facultyRepository.findOneById(facultyId);
+        if (jobPost.isOpen() && jobPost != null && faculty != null) {
+            try {
+                emailServices.sendShortlistedEmail(faculty, jobPost);
+                jobPost.setOpen(false);
+                jobPostingRepository.save(jobPost);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex.getMessage());
+            }
+        } else {
+            throw new JobPostingDataFound("Details Does Not Found");
+        }
     }
 }

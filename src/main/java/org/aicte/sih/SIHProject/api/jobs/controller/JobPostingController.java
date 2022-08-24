@@ -133,4 +133,22 @@ public class JobPostingController {
             return ResponseEntity.internalServerError().body(response);
         }
     }
+
+    @PostMapping("/shortlist/{jobPostId}/{facultyId}")
+    public ResponseEntity<APIResponse> shortlistFaculty(@PathVariable("jobPostId") Long jobPostId,
+                                                        @PathVariable("facultyId") Long facultyId) {
+        APIResponse response = new APIResponse<>();
+        try {
+            postingServices.shortlistFaculty(facultyId, jobPostId);
+            return ResponseEntity.ok(response);
+        } catch (HttpClientErrorException | HttpServerErrorException e) {
+            response.setStatusCode(e.getStatusCode().value());
+            response.setMessage(e.getStatusText());
+            return ResponseEntity.internalServerError().body(response);
+        } catch (Exception e) {
+            response.setStatusCode(500);
+            response.setMessage(e.getMessage());
+            return ResponseEntity.internalServerError().body(response);
+        }
+    }
 }
